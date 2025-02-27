@@ -2,6 +2,9 @@ import os
 import shutil
 import subprocess
 
+# Global clipboard for storing file content
+CLIPBOARD = None
+
 # Mapping common app names to correct executables
 APP_ALIASES = {
     "vs code": "code",  # VS Code CLI
@@ -11,10 +14,7 @@ APP_ALIASES = {
 }
 
 def open_directory(path):
-    """
-    Open the given path in File Explorer.
-    Handles keywords like "file explorer" and system folders.
-    """
+    # ... (unchanged code)
     try:
         if "file explorer" in path.lower():
             subprocess.Popen("explorer.exe")
@@ -38,7 +38,7 @@ def open_directory(path):
         return f"Error: {str(e)}"
 
 def create_directory(path):
-    """Create a new directory."""
+    # ... (unchanged)
     try:
         os.makedirs(path, exist_ok=True)
         return f"Created directory: {path}"
@@ -46,7 +46,7 @@ def create_directory(path):
         return f"Error: {str(e)}"
 
 def rename_file(old_path, new_path):
-    """Rename a file or directory."""
+    # ... (unchanged)
     try:
         os.rename(old_path, new_path)
         return f"Renamed '{old_path}' to '{new_path}'"
@@ -54,7 +54,7 @@ def rename_file(old_path, new_path):
         return f"Error: {str(e)}"
 
 def delete_file(path):
-    """Delete a file or directory."""
+    # ... (unchanged)
     try:
         if os.path.isdir(path):
             shutil.rmtree(path)
@@ -66,24 +66,22 @@ def delete_file(path):
         return f"Error: {str(e)}"
 
 def list_files(path="."):
-    """List files in a directory."""
+    """List directories and files in a given directory."""
     try:
-        files = os.listdir(path)
-        return f"Files in {path}: {', '.join(files)}"
+        items = os.listdir(path)
+        if not items:
+            return f"The directory '{path}' is empty."
+        # Separate directories and files
+        dirs = [item for item in items if os.path.isdir(os.path.join(path, item))]
+        files = [item for item in items if os.path.isfile(os.path.join(path, item))]
+        result = f"Directories: {', '.join(dirs)}" if dirs else "No directories."
+        result += "\n"
+        result += f"Files: {', '.join(files)}" if files else "No files."
+        return result
     except Exception as e:
         return f"Error: {str(e)}"
-
 def navigate_to_path(path, current_directory):
-    """
-    Determine a new directory based on the given path string.
-    
-    Recognizes:
-      - Drive commands like "D drive"
-      - Relative folder names
-      - The "go out" command to move one level up.
-    
-    Returns either an absolute path (if found) or an error message.
-    """
+    # ... (unchanged)
     try:
         if path.lower() in ["go out", "go out of"]:
             if current_directory.endswith(":\\"):
@@ -116,7 +114,7 @@ def navigate_to_path(path, current_directory):
         return f"Error: {str(e)}"
 
 def open_file(file_path, application=None):
-    """Open a file with the default application or a specified application."""
+    # ... (unchanged)
     try:
         if not os.path.exists(file_path):
             return f"Error: File '{file_path}' not found."
@@ -149,20 +147,70 @@ def open_application(app_name):
     except Exception as e:
         return f"Error: {str(e)}"
 
-def copy_file(source, destination):
-    """Copy a file or directory from source to destination."""
+def open_file_with(file_path, app_name):
+    """Open a file with a specified application (distinct from opening the application itself)."""
     try:
-        if os.path.isdir(source):
-            shutil.copytree(source, destination)
+        if not os.path.exists(file_path):
+            return f"Error: Path '{file_path}' not found."
+        if os.path.isdir(file_path):
+            return f"Error: '{file_path}' is a directory. Please specify a file."
+        executable = APP_ALIASES.get(app_name.lower(), app_name)
+        # For VS Code, use os.system so that it opens the file as expected.
+        if executable.lower() == "code":
+            os.system(f'{executable} "{file_path}"')
         else:
-            shutil.copy2(source, destination)
-        return f"Copied '{source}' to '{destination}'"
+            subprocess.Popen([executable, file_path], shell=False)
+        return f"Opened '{file_path}' with {executable}."
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+
+def copy_file(source, destination):
+    """
+    Copy a file or directory from source to destination.
+    If destination is an empty string, copy the file's content to an internal clipboard.
+    """
+    global CLIPBOARD
+    try:
+        if destination == "":
+            if os.path.isdir(source):
+                return f"Error: Cannot copy content of a directory."
+            with open(source, "r") as f:
+                CLIPBOARD = f.read()
+            return f"Copied content of '{source}' to clipboard."
+        else:
+            if os.path.isdir(source):
+                shutil.copytree(source, destination)
+            else:
+                shutil.copy2(source, destination)
+            return f"Copied '{source}' to '{destination}'"
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+def paste_file(destination):
+    """
+    Paste the copied clipboard content into a new file at the destination.
+    """
+    global CLIPBOARD
+    try:
+        if CLIPBOARD is None:
+            return "Clipboard is empty."
+        with open(destination, "w") as f:
+            f.write(CLIPBOARD)
+        return f"Pasted clipboard content to '{destination}'."
     except Exception as e:
         return f"Error: {str(e)}"
 
 def move_file(source, destination):
-    """Move a file or directory from source to destination."""
+    """
+    Move a file or directory from source to destination.
+    If destination is an existing directory, move the source inside that directory.
+    """
     try:
+        if not os.path.exists(source):
+            return f"Error: Source '{source}' does not exist."
+        if os.path.isdir(destination):
+            destination = os.path.join(destination, os.path.basename(source))
         shutil.move(source, destination)
         return f"Moved '{source}' to '{destination}'"
     except Exception as e:

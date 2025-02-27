@@ -4,11 +4,18 @@ import time
 import subprocess
 import pygetwindow as gw
 import webbrowser
+from whatsapp_control import open_whatsapp
 # from file_manager import FileManager
-
+from gmail_control import open_gmail
 # file_manager = FileManager()
 
 def open_application(command):
+        # Open Gmail command
+    if "open gmail" in command:
+        return open_gmail()
+        # Command: "open whatsapp"
+    if "open whatsapp" in command:
+        return open_whatsapp()
     if "notepad" in command:
         subprocess.Popen("notepad.exe")
         return "Notepad opened."

@@ -1,12 +1,12 @@
 from voice_handler import listen, speak
 from context_manager import generate_contextual_response
-from database_handler import reset_conversation_history
+# from database_handler import reset_conversation_history
 from app_control import open_application
 from browser_control import search_google
 
 def main(log_function):
     user_id = "user_001"
-    reset_conversation_history(user_id)
+    # reset_conversation_history(user_id)
 
     speak("Hello! I'm Nova. How can I assist you today?")
     log_function("Nova: Hello! I'm Nova. How can I assist you today?")

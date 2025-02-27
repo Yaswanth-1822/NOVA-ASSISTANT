@@ -18,21 +18,21 @@ File Management:
 
             "Delete example.txt"
 
-            "List files in Downloads"
+          //  "List files in Downloads"
 
             "Go to D: drive"
 
 Browser Control:
 
-            "Open YouTube"
+           //  "Open YouTube"
 
-            "Search for Python programming"
+           //  "Search for Python programming"
 
-            "Open browser"
+          //   "Open browser"
 
-            Media Control:
+          //    Media Control:
 
-            "Play song"
+          //  "Play song"
 
 Text Editing:
 
@@ -43,6 +43,30 @@ Text Editing:
             "Find the word example"
 
             "Replace hello with hi"
+Enable dark mode 
+Disable dark mode 
+Volume up
+Volume down
+Toggle mute
+Set volume to 50
+Increase brightness 
+Decrease brightness
+Set brightness to 50
+Display night light
+System info
+Display settings
+Network settings
+Speed test
+Ping msg
+Restart
+Shutdown
+open whatsapp 
+chat personname 
+send message
+send message to personname
+focus assistant off
+focus assistant priority
+focus assistant alarms
 
 General Queries:
 

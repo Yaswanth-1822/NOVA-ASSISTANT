@@ -11,13 +11,13 @@
 
         Close Applications:
 
-                    Notepad
+            close     //   Notepad
 
-                    Calculator
+               //     Calculator
 
-                    File Explorer
+                //    File Explorer
 
-                    Browsers (Chrome, Edge, Firefox, Brave)
+                 //   Browsers (Chrome, Edge, Firefox, Brave)
 
         Type in Notepad:
 
@@ -25,7 +25,7 @@
 
                     Save Notepad File:
 
-                    Save the current Notepad file with a specified name.
+                 //   Save the current Notepad file with a specified name.
 
 2. File and Directory Management
     Open Directories:
@@ -49,11 +49,6 @@ Rename a file or folder.
 Delete File/Directory:
 
 Delete a file or folder.
-
-List Files:
-
-List all files in the current directory.
-
 Navigate Directories:
 
 Move to a specific directory.
@@ -62,15 +57,15 @@ Move one level up (go out of the current directory).
 
 Switch Drives:
 
-Switch to a different drive (e.g., D: drive).
+//Switch to a different drive (e.g., D: drive).
 
 Copy File:
 
-Copy a file from one location to another.
+//Copy a file from one location to another.
 
 Move File:
 
-Move a file from one location to another.
+//Move a file from one location to another.
 
 3. Browser Control
   Open Websites:
@@ -79,7 +74,7 @@ Move a file from one location to another.
 
                 YouTube
 
-                Twitter
+             //   Twitter
 
                 Instagram
 
