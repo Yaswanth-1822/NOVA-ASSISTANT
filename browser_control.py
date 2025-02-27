@@ -16,6 +16,8 @@ def search_google(command):
             "amazon": "https://www.amazon.com",
             "flipkart": "https://www.flipkart.com",
             "wikipedia": "https://www.wikipedia.org",
+            "mvgr college":"https://www.mvgrce.edu.in",
+            "facebook":"https://www.facebook.com"
         }
 
         # Check if the query matches a known website

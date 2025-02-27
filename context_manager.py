@@ -348,13 +348,10 @@ def handle_file_commands(user_input):
         send_keys(["enter"])
         return f"Saved file as '{file_name}'."
 
-    # if "save file" in user_input_lower:
-    #     send_keys(["ctrl", "s"])
-    #     return "Saved file."
 
-    # if "close notepad" in user_input_lower:
-    #     send_keys(["alt", "f4"])
-    #     return "Closed Notepad."
+    if "close notepad" in user_input_lower:
+        send_keys(["alt", "f4"])
+        return "Closed Notepad."
 
     if "open file explorer" in user_input_lower:
         response = open_directory(current_directory)

@@ -23,18 +23,3 @@ def generate_response(prompt):
 
 
 
-
-
-
-
-
-
-# import google.generativeai as genai
-
-# # Configure Gemini API
-# genai.configure(api_key="AIzaSyBHkBd1rszhGlwsumjUhRsiD13jlj2KpTU")
-# model = genai.GenerativeModel('gemini-2.0-flash')
-
-# def generate_response(prompt):
-#     response = model.generate_content(prompt)
-#     return response.text
