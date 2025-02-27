@@ -1,46 +1,4 @@
-#
-#  import os
-# import webbrowser
-# import requests
 
-# def search_google(command):
-#     try:
-#         query = command.replace("search", "").strip().lower()
-
-#         websites = {
-#             "youtube": "https://www.youtube.com",
-#             "facebook": "https://www.facebook.com",
-#             "linkedin": "https://www.linkedin.com",
-#             "twitter": "https://www.twitter.com",
-#             "instagram": "https://www.instagram.com",
-#             "flipkart": "https://www.flipkart.com",
-#             "wikipedia": "https://www.wikipedia.org"
-#         }
-
-#         if query in websites:
-#             url = websites[query]
-#             print(f"Opening {query} directly: {url}")
-#             webbrowser.open(url)
-#             return
-
-#         search_url = f"https://api.duckduckgo.com/?q={query}&format=json"
-#         print(f"Searching for: {query}")
-
-#         response = requests.get(search_url)
-#         data = response.json()
-
-#         if "AbstractURL" in data and data["AbstractURL"]:
-#             first_link = data["AbstractURL"]
-#         elif "Results" in data and len(data["Results"]) > 0:
-#             first_link = data["Results"][0]["FirstURL"]
-#         else:
-#             first_link = f"https://www.google.com/search?q={query}"
-
-#         print(f"Opening: {first_link}")
-#         webbrowser.open(first_link)
-
-#     except Exception as e:
-#         print(f"Error searching: {e}")
 import webbrowser
 
 def search_google(command):
@@ -58,6 +16,8 @@ def search_google(command):
             "amazon": "https://www.amazon.com",
             "flipkart": "https://www.flipkart.com",
             "wikipedia": "https://www.wikipedia.org",
+            "mvgr college":"https://www.mvgrce.edu.in",
+            "facebook":"https://www.facebook.com"
         }
 
         # Check if the query matches a known website

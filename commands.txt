@@ -18,21 +18,29 @@ File Management:
 
             "Delete example.txt"
 
-            "List files in Downloads"
+          //  "List files in Downloads"
 
             "Go to D: drive"
 
 Browser Control:
 
-            "Open YouTube"
+           //  "Open YouTube"
 
-            "Search for Python programming"
+           //  "Search for Python programming"
 
-            "Open browser"
+          //   "Open browser"
+
+          //    Media Control:
+
+            "Open instagram"
+
+            "open facebook"
 
             Media Control:
 
-            "Play song"
+          //  "Play song"
+
+            "search anything on browser"
 
 Text Editing:
 
@@ -43,7 +51,75 @@ Text Editing:
             "Find the word example"
 
             "Replace hello with hi"
+Enable dark mode 
+Disable dark mode 
+Volume up
+Volume down
+Toggle mute
+Set volume to 50
+Increase brightness 
+Decrease brightness
+Set brightness to 50
+Display night light
+System info
+Display settings
+Network settings
+Speed test
+Ping msg
+Restart
+Shutdown
+open whatsapp 
+chat personname 
+send message
+send message to personname
+focus assistant off
+focus assistant priority
+focus assistant alarms
 
 General Queries:
 
             "What is the weather today?" (uses Gemini API for contextual responses)
+
+youtube music play:
+
+                play song name or any video name on youtube
+
+                play or pause youtube //Works only if you are in youtube
+
+                if you not in youtube you need to say pause music or play music
+
+
+Vs code Commands:
+
+        open vs code --> to open 
+        open vs code --> to close
+
+        create new extension file --> to create new file with extension
+        eg:create new python file
+
+        write specific code in file name --> to write code in specific file //if file not exist it will create new file with that specific extension 
+        eg:write bubble sort in python file
+
+        run filename extension file --> to run specific files
+        eg:run test python file
+
+
+Scroll Operations:
+
+        scrool up --> to scroll upwards
+        scroll down --> to scrool downwards
+
+Music operations:
+
+        open music or video -->
+         opens default music or video player if no default it opens what remaining in the system
+
+        close media player --> close the opened media player
+
+        next song --> play next song of one song is playing
+        previous song --> play previous song 
+        pause music --> to pause music
+        play music --> to play music
+
+        increase volume --> to increase volume
+        decrease volume --> to decreace volume

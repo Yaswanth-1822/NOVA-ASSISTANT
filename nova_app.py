@@ -5,6 +5,7 @@ import threading
 import sys
 
 class NovaApp:
+    
     def __init__(self, root):
         self.root = root
         self.root.title("Nova Assistant")
@@ -43,7 +44,7 @@ class NovaApp:
 
     def quit_app(self):
         self.root.destroy()
-
+ 
 if __name__ == "__main__":
     root = tk.Tk()
     app = NovaApp(root)
