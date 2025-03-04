@@ -1,94 +1,8 @@
-Application Control:
-
-        "Open Notepad"
-
-        "Close Calculator"
-
-        "Type Hello World in Notepad"
-
-        "Save Notepad file as example.txt"
-
-File Management:
-
-            "Open Documents folder"
-
-            "Create folder named NewFolder"
-
-            "Rename old.txt to new.txt"
-
-            "Delete example.txt"
-
-          //  "List files in Downloads"
-
-            "Go to D: drive"
-
-Browser Control:
-
-           //  "Open YouTube"
-
-           //  "Search for Python programming"
-
-          //   "Open browser"
-
-          //    Media Control:
-
-            "Open instagram"
-
-            "open facebook"
-
-            Media Control:
-
-          //  "Play song"
-
-            "search anything on browser"
-
-Text Editing:
-
-            "Copy selected text"
-
-            "Paste clipboard content"
-
-            "Find the word example"
-
-            "Replace hello with hi"
-Enable dark mode 
-Disable dark mode 
-Volume up
-Volume down
-Toggle mute
-Set volume to 50
-Increase brightness 
-Decrease brightness
-Set brightness to 50
-Display night light
-System info
-Display settings
-Network settings
-Speed test
-Ping msg
-Restart
-Shutdown
-open whatsapp 
-chat personname 
-send message
-send message to personname
-focus assistant off
-focus assistant priority
-focus assistant alarms
-
-General Queries:
-
-            "What is the weather today?" (uses Gemini API for contextual responses)
-
 youtube music play:
 
                 play song name or any video name on youtube
 
                 play or pause youtube //Works only if you are in youtube
-
-                if you not in youtube you need to say pause music or play music
-
-
 Vs code Commands:
 
         open vs code --> to open 
@@ -112,7 +26,7 @@ Scroll Operations:
 Music operations:
 
         open music or video -->
-         opens default music or video player if no default it opens what remaining in the system
+        opens default music or video player if no default it opens what remaining in the system
 
         close media player --> close the opened media player
 
@@ -123,3 +37,56 @@ Music operations:
 
         increase volume --> to increase volume
         decrease volume --> to decreace volume
+web browsing:
+        search anything // it will search it in google
+applications:
+        open applicationname // opens only few
+        notepad:
+           open notepad 
+           type something
+           close notepad
+gmail operations:
+        open gmail
+        compose mail:
+             mail
+             subject
+             body
+        find mail mailname
+        read nth mail
+        close gmail
+whatsapp operations:
+        open whatsapp
+        close whatsapp
+        send message message
+        send message to personname
+        view status
+        voice call 
+        video call
+system operations:
+        volume up
+        volume down
+        set volume to 50
+        toggle mute
+        increase brightness
+        decrease brightness
+        set brightness to 50
+        Display settings
+        display night light 
+        enable dark light
+        disable dark mode
+        system info
+        speed test
+        restart 
+        Shutdown
+file operations:
+        go to directoryname
+        go out from directoryname
+        create file filename
+        create folder foldername
+        delete filename/foldername
+        rename filename/foldername
+        copy filename
+        Paste
+        move filename to foldername / move foldername to drivename/foldername
+        open filename with applicationname
+

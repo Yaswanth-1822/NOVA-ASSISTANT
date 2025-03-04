@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-VS_CODE_FOLDER = "D:/Testing"
+VS_CODE_FOLDER = "D:/Nova-testing"
 
 def run_specific_file(filename, file_type):
     file_extensions = {

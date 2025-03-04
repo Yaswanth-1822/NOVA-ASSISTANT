@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import scrolledtext
-from main import main
+from main2 import main
 import threading
 import sys
 

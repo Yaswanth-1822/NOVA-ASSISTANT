@@ -9,7 +9,7 @@ def play_youtube_video(video_name):
     time.sleep(5)  # Wait for YouTube to load
 
     #  Click on the first video result (position may vary)
-    pyautogui.moveTo(400, 300)  # Adjust the coordinates if needed
+    pyautogui.moveTo(584, 802)  # Adjust the coordinates if needed
     pyautogui.click()
 
     print(f"Playing: {video_name} on YouTube")

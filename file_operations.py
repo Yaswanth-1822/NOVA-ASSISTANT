@@ -6,7 +6,7 @@ from ai_integration import ai_response
 import ai_integration
 
 
-VS_CODE_FOLDER = "D:/Testing"
+VS_CODE_FOLDER = "D:/Nova-testing"
 
 def create_code_file(command):
     global VS_CODE_FOLDER  
@@ -27,7 +27,7 @@ def create_code_file(command):
 
     for key, ext in file_types.items():
         if key in command:
-            file_name = f"new_file.{ext}"  # Default file name
+            file_name = f"new.{ext}"  # Default file name
             file_path = os.path.join(VS_CODE_FOLDER, file_name)
 
             with open(file_path, "w") as f:

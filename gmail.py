@@ -28,7 +28,15 @@ def open_gmail():
         return f"Error: Gmail did not load in time: {e}"
     
     return "Gmail opened with your real Firefox profile."
-
+# first mail
+base_x = 855
+base_y = 335
+# compose button
+compose_x = 42
+compose_y = 225
+# send button
+send_x = 1145
+send_y = 1095
 # Test the function if run directly:
 if __name__ == "__main__":
     print(open_gmail())

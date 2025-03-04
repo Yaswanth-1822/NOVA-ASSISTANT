@@ -9,7 +9,7 @@ genai.configure(api_key="AIzaSyBHkBd1rszhGlwsumjUhRsiD13jlj2KpTU")
 model = genai.GenerativeModel("gemini-2.0-flash")
 
 # Path where VS Code files are stored
-VS_CODE_FOLDER = "D:/Testing"
+VS_CODE_FOLDER = "D:/Nova-testing"
 
 # Function to find the latest file of a specific type
 def get_latest_file(extension):

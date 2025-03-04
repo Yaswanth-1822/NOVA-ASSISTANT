@@ -119,7 +119,7 @@ def handle_whatsapp_commands(user_input):
     - "open whatsapp"
     - "chat <contact_name>"
     - "send <message> to <contact_name>" or "send message to <phone_number>: <message>"
-    """
+    """  
     user_input_lower = user_input.lower().strip()
 
     # Command: "chat <contact_name>"

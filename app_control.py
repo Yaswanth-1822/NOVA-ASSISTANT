@@ -28,7 +28,7 @@ def open_application(command):
         os.system("start explorer")
         return "File Explorer opened."
     elif "open vs code" in command or "open visual studio code" in command:
-        VS_CODE_FOLDER = "D:\Testing"
+        VS_CODE_FOLDER = "D:/Nova-testing"
         os.system(f"code {VS_CODE_FOLDER}")
         print(f"Opened VS Code in {VS_CODE_FOLDER}")
     elif "open google" in command or "open browser" in command:
