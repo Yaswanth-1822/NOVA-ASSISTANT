@@ -1,7 +1,7 @@
 # ai_integration.py
 import requests
 
-GEMINI_API_KEY = "AIzaSyAZWOV7aHLltpVfNQ2QZz00U7PDSjbJr20"
+GEMINI_API_KEY = "AIzaSyCPjwvy4Ib8zHmtD0JbMmuhc2mPSyO-cFs"
 # Corrected Gemini endpoint
 GEMINI_ENDPOINT = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={GEMINI_API_KEY}"
 

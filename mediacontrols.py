@@ -1,65 +1,90 @@
 import pyautogui
 import os
-import subprocess
+import random
 
-# ✅ Default music file (Leave empty if not set)
-DEFAULT_MUSIC_FILE = ""  # Example: "C:\\Users\\Public\\Music\\Sample Music\\song.mp3"
+# Set your music library path here:
+MUSIC_LIBRARY_PATH = r"C:\Users\YourUsername\Music"  # <-- Replace with your actual music folder path.
+
+# === Coordinates for media control buttons ===
+# Update these coordinates based on your media player's UI location.
+# Coordinates for the Play/Pause button:
+PLAY_PAUSE_BUTTON = (1016, 999)      # Example: (x, y) for Play/Pause button
+# Coordinates for the Next button:
+NEXT_BUTTON = (1074, 999)            # Example: (x, y) for Next track button
+# Coordinates for the Previous button:
+PREVIOUS_BUTTON = (957, 999)         # Example: (x, y) for Previous track button
+# Coordinates for the Close button (if you want to close the media player window):
+CLOSE_BUTTON = (1745, 104)           # Example: (x, y) for the window’s "X" button
 
 def control_media(action):
-    actions = {
-        "pause": "playpause",  # Pause/Play toggle
-        "play": "playpause",  # Try Play/Pause first
-        "next": "nexttrack",  # Next song
-        "previous": "prevtrack",  # Previous song
-        "stop": "stop",  # Stop music
-        "volume up": "volumeup",  # Increase volume
-        "volume down": "volumedown",  # Decrease volume
-    }
-
     if action == "play":
-        # ✅ Try Play/Pause first
-        pyautogui.press("playpause")
-        print("✅ Sent Play/Pause command")
+        # If media player is not open, open a random song.
+        if not is_media_player_open():
+            result = play_song_from_library()
+            return result
+        # Click on the Play/Pause button.
+        pyautogui.click(PLAY_PAUSE_BUTTON[0], PLAY_PAUSE_BUTTON[1])
+        return "Play/Pause button clicked."
+    
+    elif action == "pause":
+        if is_media_player_open():
+            pyautogui.click(PLAY_PAUSE_BUTTON[0], PLAY_PAUSE_BUTTON[1])
+            return "Play/Pause button clicked (pause)."
+        else:
+            return "Media player is not open."
+    
+    elif action == "next":
+        pyautogui.click(NEXT_BUTTON[0], NEXT_BUTTON[1])
+        return "Next track button clicked."
+    
+    elif action == "previous":
+        pyautogui.click(PREVIOUS_BUTTON[0], PREVIOUS_BUTTON[1])
+        return "Previous track button clicked."
+    
+    elif action == "stop":
+        # Instead of force-killing the process (which can cause hangs),
+        # simulate a click on the close button of the media player's window.
+        pyautogui.click(CLOSE_BUTTON[0], CLOSE_BUTTON[1])
+        return "Close button clicked on media player."
+    
+    elif action == "volume up":
+        # If you have coordinates for volume up, update the following:
+        # Example: VOLUME_UP_BUTTON = (x, y)
+        # pyautogui.click(VOLUME_UP_BUTTON[0], VOLUME_UP_BUTTON[1])
+        return "Volume up command not implemented via coordinates."
+    
+    elif action == "volume down":
+        # Similarly, if you have coordinates for volume down:
+        return "Volume down command not implemented via coordinates."
+    
+    else:
+        return "Unsupported action."
 
-        # ✅ If nothing plays, check if default music exists
-        if not is_music_playing():
-            if DEFAULT_MUSIC_FILE and os.path.exists(DEFAULT_MUSIC_FILE):
-                print("❌ No music detected, playing default song...")
-                play_default_music()
-                return "✅ Playing default music."
-            else:
-                print("❌ No default song found! Opening Windows Media Player...")
-                open_media_player()
-                return "❌ No default song found. Opened Windows Media Player."
+def is_media_player_open():
+    """
+    Checks if the media player window is open.
+    For a coordinate-based approach, you can use image recognition (pyautogui.locateOnScreen)
+    or set a flag when you open the media player.
+    
+    For simplicity, this function currently returns True if the music library path exists,
+    but you may want to implement a more robust check.
+    """
+    # As a placeholder, assume the media player is open if a recent song was played.
+    # You can enhance this function using pygetwindow or image recognition.
+    return True
 
-        return "✅ Play command executed."
-
-    if action in actions:
-        pyautogui.press(actions[action])  # ✅ Send media key press
-        print(f"✅ {action.capitalize()} command sent")
-        return f"{action.capitalize()} command executed."
-
-    print(f"❌ Unsupported media action: {action}")
-    return f"Unsupported media action: {action}"
-
-def is_music_playing():
-    """Check if any media player is playing (Windows only)."""
+def play_song_from_library():
+    """Plays a random song from your music library using os.startfile()."""
     try:
-        output = subprocess.check_output('tasklist', shell=True).decode()
-        return "wmplayer.exe" in output or "vlc.exe" in output  # ✅ Adjust for your media player
-    except Exception:
-        return False
-
-def play_default_music():
-    """Play a default music file if nothing is playing."""
-    try:
-        os.startfile(DEFAULT_MUSIC_FILE)  # ✅ Open default song
+        if not os.path.exists(MUSIC_LIBRARY_PATH):
+            return f"Music library path not found: {MUSIC_LIBRARY_PATH}"
+        # List music files with common extensions.
+        music_files = [f for f in os.listdir(MUSIC_LIBRARY_PATH) if f.lower().endswith(('.mp3', '.wav', '.flac'))]
+        if not music_files:
+            return "No music files found in the library."
+        random_song = random.choice(music_files)
+        song_path = os.path.join(MUSIC_LIBRARY_PATH, random_song)
+        os.startfile(song_path)  # This opens the file with the default media player.
+        return f"Playing {random_song}"
     except Exception as e:
-        print(f"❌ Error playing default music: {e}")
-
-def open_media_player():
-    """Open Windows Media Player if no default song is set."""
-    try:
-        os.system("start wmplayer")  # ✅ Open Windows Media Player
-    except Exception as e:
-        print(f"❌ Error opening media player: {e}")
+        return f"Failed to play song: {e}"

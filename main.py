@@ -4,10 +4,10 @@ from play_video_on_youtube import play_youtube_video
 from run_file import run_specific_file
 from scroll import scrolldown, scrollup
 from voice_handler import listen, speak
-from context_manager import generate_contextual_response
+from context_manager_error import generate_contextual_response
 from database_handler import reset_conversation_history
 from app_control import open_application, close_application
-from browser_control import search_google
+from browser_control import search_google,click_nth_link
 from write_to_file import write_code_in_vscode
 from youtube_control import control_youtube
 import os
@@ -28,7 +28,7 @@ class NovaAssistant:
             log_function(f"Nova: {response}")
             return response
 
-        if any(cmd in lower_input for cmd in ["exit", "quit", "stop"]):
+        if any(cmd in lower_input for cmd in ["exit", "quit"]):
             response = "Goodbye!"
             if speak_response:
                 speak(response)
@@ -42,36 +42,31 @@ class NovaAssistant:
                 speak(response)
             log_function(f"Nova: {response}")
             return response
-
-        # NEW: Handle commands like "go to D drive"
-        if lower_input.startswith("go to") and "drive" in lower_input:
-            match = re.search(r"go to ([a-zA-Z])", lower_input)
-            if match:
-                drive_letter = match.group(1).upper()
-                drive_path = f"{drive_letter}:\\"
-                try:
-                    os.startfile(drive_path)
-                    response = f"Opened {drive_letter} drive."
-                except Exception as e:
-                    response = f"Failed to open {drive_letter} drive: {e}"
-                if speak_response:
-                    speak(response)
-                log_function(f"Nova: {response}")
-                return response
-
         if "close" in lower_input:
             response = close_application(user_input)
             log_function(f"Nova: {response}")
             return response
 
-        if "search" in lower_input:
-            response = search_google(user_input)
-            if speak_response:
-                speak(response)
+        # --- Browser Commands ---
+        if "search google" in lower_input:
+            response = search_google(lower_input)  # from browser_control.py
             log_function(f"Nova: {response}")
             return response
 
-        if "create" in lower_input:
+        elif "click link" in lower_input or "click nth link" in lower_input:
+            import re
+            match = re.search(r'\d+', lower_input)
+            if match:
+                n = int(match.group())
+                response = click_nth_link(n)  # from browser_control.py
+                log_function(f"Nova: {response}")
+                return response
+            else:
+                log_function("Nova: No link number specified.")
+                return "Please specify the link number to click."
+
+
+        if "new file" in lower_input:
             response = create_code_file(user_input)
             log_function(response)
             return response
@@ -114,9 +109,53 @@ class NovaAssistant:
             response = control_youtube("pause" if "pause" in lower_input else "play")
             log_function(f"Nova: {response}")
             return response
+        # --- YouTube Commands ---
+        if "search youtube" in lower_input:
+            # Extract query after "search youtube"
+           # query = lower_input.replace("search youtube", "").strip()
+            # If query is empty, you might prompt the user via voice input
+            if not lower_input:
+                lower_input = "default query"  # or call get_voice_input() if desired
+            response = control_youtube(lower_input)  # Alternatively, call youtube_control.search_youtube(query)
+            log_function(f"Nova: {response}")
+            return response
+
+        elif "like youtube" in lower_input:
+            response = control_youtube("like video")
+            log_function(f"Nova: {response}")
+            return response
+
+        elif "dislike youtube" in lower_input:
+            response = control_youtube("dislike video")
+            log_function(f"Nova: {response}")
+            return response
+        elif "skip add" in lower_input:
+            response = control_youtube("skip ads")
+            log_function(f"Nova: {response}")
+            return response
+
+        elif "full screen youtube" in lower_input:
+            response = control_youtube("full screen")
+            log_function(f"Nova: {response}")
+            return response
+
+        elif "next video youtube" in lower_input:
+            response = control_youtube("next video")
+            log_function(f"Nova: {response}")
+            return response
+
+        elif "click video" in lower_input:
+            # Expects command like "click video 3"
+            response = control_youtube(lower_input)  # your youtube_control.control_youtube() parses the number
+            log_function(f"Nova: {response}")
+            return response
 
         try:
-            if "pause music" in lower_input or "play music" in lower_input:
+            if "play music" in lower_input:
+                response = control_media("play")
+                log_function(f"Nova: {response}")
+                return response
+            if "pause music" in lower_input:
                 response = control_media("pause")
                 log_function(f"Nova: {response}")
                 return response
@@ -144,6 +183,7 @@ class NovaAssistant:
             log_function(f"Nova: Error: {e}")
             print(f"Error: {e}")
             return None
+
 
         # Fallback: generate a contextual response
         nova_response = generate_contextual_response(user_input, self.user_id)

@@ -5,7 +5,7 @@ from play_video_on_youtube import play_youtube_video
 from run_file import run_specific_file
 from scroll import scrolldown, scrollup
 from voice_handler import listen, speak
-from context_manager import generate_contextual_response
+from context_manager_error import generate_contextual_response
 from database_handler import reset_conversation_history
 from app_control import open_application
 
@@ -30,7 +30,7 @@ def main(log_function):
             speak(user_input)
             continue
 
-        if any(cmd in user_input.lower() for cmd in ["exit", "quit", "stop"]):
+        if any(cmd in user_input.lower() for cmd in ["exit", "quit"]):
             speak("Goodbye!")
             log_function("Nova: Goodbye!")
             break

@@ -37,14 +37,14 @@ def open_gmail():
 def read_mail(n):
     """
     Clicks on the nth email in the Gmail inbox using fixed coordinates.
-    Adjust base_x, base_y, and offset according to your screen layout.
+    Update base_x, base_y, and offset according to your screen layout.
     """
     try:
         n = int(n)
     except Exception:
         return "Invalid mail number provided."
     
-    # Example coordinates for the first email (update for your screen)
+    # Example coordinates for the first email; adjust these for your screen.
     base_x = 855
     base_y = 335
     offset = (n - 1) * 50  # Adjust vertical spacing if necessary
@@ -55,13 +55,13 @@ def read_mail(n):
 
 def close_gmail():
     """
-    Closes the overall Gmail window. It attempts to close any window with "Gmail" in its title.
-    If not found, it falls back to using Ctrl+W.
+    Closes the Gmail window. It now searches for any window with 'gmail' (case-insensitive) in its title.
+    If no such window is found, it falls back to using the Ctrl+W hotkey.
     """
     try:
-        windows = gw.getWindowsWithTitle("Gmail")
-        if windows:
-            for window in windows:
+        gmail_windows = [window for window in gw.getAllWindows() if "gmail" in window.title.lower()]
+        if gmail_windows:
+            for window in gmail_windows:
                 window.close()
             time.sleep(3)
             return "Gmail closed."
@@ -79,8 +79,8 @@ def compose_mail():
     Clicks the Compose button using fixed coordinates.
     Update compose_x and compose_y to the actual location of the Compose button.
     """
-    compose_x = 42   # <-- Update these values!
-    compose_y = 225   # <-- Update these values!
+    compose_x = 42   # <-- Update these values as per your screen!
+    compose_y = 225  # <-- Update these values as per your screen!
     pyautogui.click(compose_x, compose_y)
     time.sleep(2)
     return True
@@ -90,8 +90,8 @@ def click_send():
     Clicks the Send button using fixed coordinates.
     Update send_x and send_y to the actual location of the Send button.
     """
-    send_x = 1145    # <-- Update these values!
-    send_y = 1095     # <-- Update these values!
+    send_x = 1145   # <-- Update these values as per your screen!
+    send_y = 1095   # <-- Update these values as per your screen!
     pyautogui.click(send_x, send_y)
     time.sleep(2)
 
@@ -106,7 +106,7 @@ def send_mail(recipient, subject, body):
     
     # Write recipient; assume the "To" field is focused.
     pyautogui.write(recipient, interval=0.05)
-    pyautogui.press("tab")  # Move to Subject field
+    pyautogui.press("tab")  # Move to Subject field.
     time.sleep(0.5)
     
     pyautogui.write(subject, interval=0.05)
@@ -122,14 +122,14 @@ def send_mail(recipient, subject, body):
 
 def handle_gmail_send_command(user_input):
     """
-    Processes a 'send mail' command. If details aren't included,
-    it will prompt for them via voice input.
-    The recipient is taken as a name; if no '@' is found, '@gmail.com' is appended.
+    Processes a 'compose mail' or 'send mail' command. If details aren't included,
+    it will prompt for them via voice input. The recipient is taken as a name;
+    if no '@' is found, '@gmail.com' is appended.
     
-    Expected initial command example: "send mail"
+    Expected initial command example: "compose mail" or "send mail"
     """
-    # Remove the prefix if present (we won't rely on parsing all details from the command)
-    command = user_input.lower().replace("send mail", "").strip()
+    # Remove both "send mail" and "compose mail" prefixes.
+    command = user_input.lower().replace("send mail", "").replace("compose mail", "").strip()
     recipient = None
     subject = None
     body = None
@@ -142,21 +142,22 @@ def handle_gmail_send_command(user_input):
     if not body:
         body = get_voice_input("Please say the body of the email:")
 
-    # If the recipient does not include '@', append '@gmail.com'
+    # Append '@gmail.com' if missing.
     if "@" not in recipient:
         recipient = recipient + "@gmail.com"
     
     return send_mail(recipient, subject, body)
+
 # ------------------ Coordinate-Based Searching ------------------
 
 def search_mail(query):
     """
     Searches for emails in Gmail using the search box.
     Clicks on the search box at fixed coordinates, types the query, and presses Enter.
-    Update search_box_x and search_box_y to your Gmail search box's location.
+    Update search_box_x and search_box_y to match your Gmail layout.
     """
-    search_box_x = 400  # Update with your search box's X coordinate.
-    search_box_y = 150  # Update with your search box's Y coordinate.
+    search_box_x = 400  # <-- Update with your search box's X coordinate.
+    search_box_y = 150  # <-- Update with your search box's Y coordinate.
     
     pyautogui.click(search_box_x, search_box_y)
     time.sleep(1)
@@ -164,3 +165,14 @@ def search_mail(query):
     pyautogui.press("enter")
     time.sleep(5)
     return f"Displayed search results for '{query}'."
+def gmail_home():
+    """
+    Clicks the Gmail home icon using fixed coordinates.
+    Update home_x and home_y to the actual location of the Gmail name icon at the top left.
+    """
+    home_x = 100   # <-- Update these values as per your screen!
+    home_y = 50    # <-- Update these values as per your screen!
+    pyautogui.click(home_x, home_y)
+    time.sleep(3)
+    return "Gmail home clicked."
+

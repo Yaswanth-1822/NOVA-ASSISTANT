@@ -13,13 +13,9 @@ from voice_handler import listen, speak
 
 os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
 
-# Define a base blue color for voice animation.
-BASE_BLUE = QColor(135, 206, 250)
-
 ##############################################################################
 #                              THEME COLORS
 ##############################################################################
-# Dark mode
 COLORS = {
     "background": "#2D2D2D",
     "sidebar": "#1E1E1E",
@@ -30,7 +26,7 @@ COLORS = {
     "danger": "#F44336",
     "header": "#3C3C3C"
 }
-# Light mode
+
 LIGHT_COLORS = {
     "background": "#F0F0F0",
     "sidebar": "#D3D3D3",
@@ -51,8 +47,7 @@ class ChatBubble(QFrame):
         self.text = text
         self.is_nova = is_nova
         self.setMinimumWidth(200)
-        # No maximum width so that long messages are shown completely.
-        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.setMaximumWidth(600)
         self.initUI()
 
     def initUI(self):
@@ -60,21 +55,18 @@ class ChatBubble(QFrame):
         self.label.setWordWrap(True)
         self.label.setFont(QFont("Segoe UI", 11))
         self.label.setStyleSheet(f"color: {COLORS['text']};")
-        self.label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         layout = QVBoxLayout(self)
         layout.addWidget(self.label)
         layout.setContentsMargins(15, 10, 15, 10)
-        bg_color = COLORS['secondary'] if self.is_nova else COLORS['primary']
         self.setStyleSheet(f"""
-            background-color: {bg_color};
+            background-color: {COLORS['secondary'] if self.is_nova else COLORS['primary']};
             border-radius: 15px;
             margin: 5px;
         """)
 
     def update_colors(self):
-        bg_color = COLORS['secondary'] if self.is_nova else COLORS['primary']
         self.setStyleSheet(f"""
-            background-color: {bg_color};
+            background-color: {COLORS['secondary'] if self.is_nova else COLORS['primary']};
             border-radius: 15px;
             margin: 5px;
         """)
@@ -147,16 +139,12 @@ class CommandSection(QWidget):
 class Sidebar(QWidget):
     def __init__(self):
         super().__init__()
+        self.setFixedWidth(300)
+        self.setStyleSheet(f"background-color: {COLORS['sidebar']};")
         self.command_sections = []
         self.initUI()
 
     def initUI(self):
-        # In dark mode, use light sidebar; in light mode, use dark sidebar.
-        if COLORS["background"] == "#2D2D2D":
-            self.setStyleSheet("background-color: #f5f5f5;")
-        else:
-            self.setStyleSheet("background-color: #333333;")
-        self.setFixedWidth(300)
         self.main_layout = QVBoxLayout(self)
         self.main_layout.setContentsMargins(0, 0, 0, 0)
         self.main_layout.setSpacing(0)
@@ -194,16 +182,15 @@ class Sidebar(QWidget):
         content_layout.setContentsMargins(0, 15, 0, 15)
         content_layout.setSpacing(10)
 
-
         data = {
             "💬 WhatsApp": ["Open WhatsApp", "Close WhatsApp", "Send Message to person name","send message message", "View Status", "Voice Call", "Video Call"],
-            "📧 Gmail": ["Open Gmail", "Compose Mail", "Find Mail mail", "Read nth Mail", "Close Gmail"],
-            "🎵 Music": ["open media player/music player","Play Music", "Pause Music", "Next Song", "Previous Song", "Volume Up", "Volume Down","stop music(to close music player)"],
+            "📧 Gmail": ["Open Gmail", "Compose Mail", "Find Mail", "Read nth Mail", "Close Gmail"],
+            "🎵 Music": ["open media player/music player","Play Music", "Pause Music", "Next Song", "Previous Song", "Volume Up", "Volume Down","close media player/music player"],
             "💻 VS Code": ["Open VS Code", "Create File", "Write Code(writes code from online)", "Run File", "Close VS Code"],
             "🖥️ System": ["Volume up","volume down","set volume to %","toggle mute", "Increase Brightness","Decrease Brightness","set brightness to %", "Display Settings", "Display Night Light", "Enable Dark Mode","Disable dark mode","Increase Volume","Decrease Volume","system info","speed test","restart","shutdown"],
             "📁 File Management": ["Open File Explorer","go to directory name","go out from directory name","create file filename", "Create Folder foldername", "Delete Filename/foldername", "Rename Filename/foldername with newfilename/foldername", "Move Filename to foldername ","move foldername to drive name","move foldername to foldername","Copy filename","Paste","open filename with applicationname"],
-            "🌐 Browser": ["Open Browser","Search Somthing","Close Browser","search google something","click link linknumbeer"],
-            "🔴 Youtube ": ["Open Youtube","Play videoname on youtube","Pause youtube","Play youtube","skip add","like video","dislike video","full screen","next video","search video" , "click video videonumber"]
+            "🌐 Browser": ["Open Browser","Search Somthing","Close Browser"],
+            "🔴 Youtube ": ["Open Youtube","Play videoname on youtube","Pause","Play"]
         }
 
         for title, commands in data.items():
@@ -234,10 +221,7 @@ class Sidebar(QWidget):
         self.update_ui()
 
     def update_ui(self):
-        if COLORS["background"] == "#2D2D2D":
-            self.setStyleSheet("background-color: #f5f5f5;")
-        else:
-            self.setStyleSheet("background-color: #333333;")
+        self.setStyleSheet(f"background-color: {COLORS['sidebar']};")
         self.header.setStyleSheet(f"background: {COLORS['header']};")
         self.title.setStyleSheet(f"font: bold 20px 'Segoe UI'; color: {COLORS['text']};")
         self.theme_btn.setStyleSheet("border: none; color: " + COLORS['text'] + ";")
@@ -246,13 +230,12 @@ class Sidebar(QWidget):
             section.update_theme()
 
 ##############################################################################
-#         VOICE ASSISTANT WIDGET (Animation)
+#         VOICE ASSISTANT WIDGET
 ##############################################################################
 class VoiceAssistantWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        # Increase widget size for a larger animation
-        self.setFixedSize(250, 250)
+        self.setFixedSize(200, 200)
         self.voice_state = "idle"  # "idle", "listening", "responding"
         self._scaleFactor = 1.0
         self.ripple_phase = 0
@@ -268,9 +251,9 @@ class VoiceAssistantWidget(QWidget):
 
     def update_animation(self):
         if self.voice_state == "idle":
-            self._scaleFactor = random.uniform(1.0, 1.1)
+            self._scaleFactor = random.uniform(0.98, 1.02)
         elif self.voice_state == "listening":
-            self._scaleFactor = random.uniform(1.0, 1.15)
+            self._scaleFactor = random.uniform(0.98, 1.05)
             self.ripple_phase = (self.ripple_phase + 15) % 360
         elif self.voice_state == "responding":
             self.bar_values = [random.uniform(0.3, 1.0) for _ in range(self.num_bars)]
@@ -283,37 +266,37 @@ class VoiceAssistantWidget(QWidget):
         cy = self.height() / 2.0
 
         if self.voice_state == "idle":
-            radius = int(90 * self._scaleFactor)
+            radius = 60 * self._scaleFactor
             gradient = QRadialGradient(cx, cy, radius * 1.4, cx, cy)
-            gradient.setColorAt(0.0, QColor(BASE_BLUE.red(), BASE_BLUE.green(), BASE_BLUE.blue(), 220))
-            gradient.setColorAt(1.0, QColor(BASE_BLUE.red(), BASE_BLUE.green(), BASE_BLUE.blue(), 0))
+            gradient.setColorAt(0.0, QColor(0, 120, 212, 220))
+            gradient.setColorAt(1.0, QColor(0, 120, 212, 0))
             painter.setBrush(gradient)
             painter.setPen(Qt.NoPen)
             painter.drawEllipse(int(cx - radius), int(cy - radius), int(radius * 2), int(radius * 2))
 
         elif self.voice_state == "listening":
-            main_radius = int(80 * self._scaleFactor)
+            main_radius = 50 * self._scaleFactor
             gradient = QRadialGradient(cx, cy, main_radius, cx, cy)
-            gradient.setColorAt(0.0, QColor(BASE_BLUE.red(), BASE_BLUE.green(), BASE_BLUE.blue(), 240))
-            gradient.setColorAt(1.0, QColor(BASE_BLUE.red(), BASE_BLUE.green(), BASE_BLUE.blue(), 150))
+            gradient.setColorAt(0.0, QColor(0, 120, 212, 240))
+            gradient.setColorAt(1.0, QColor(0, 191, 165, 150))
             painter.setBrush(gradient)
             painter.setPen(Qt.NoPen)
             painter.drawEllipse(int(cx - main_radius), int(cy - main_radius), int(main_radius * 2), int(main_radius * 2))
             ripple_count = 2
             for i in range(1, ripple_count + 1):
                 ripple_offset = ((self.ripple_phase + i * 30) % 360) / 360.0 * 20
-                ripple_radius = int(main_radius + ripple_offset + i * 5)
+                ripple_radius = main_radius + ripple_offset + i * 5
                 opacity = max(0, 150 - i * 60)
-                pen = QPen(QColor(BASE_BLUE.red(), BASE_BLUE.green(), BASE_BLUE.blue(), opacity))
+                pen = QPen(QColor(0, 191, 165, opacity))
                 pen.setWidth(3)
                 painter.setPen(pen)
                 painter.setBrush(Qt.NoBrush)
                 painter.drawEllipse(int(cx - ripple_radius), int(cy - ripple_radius), int(ripple_radius * 2), int(ripple_radius * 2))
-            small_radius = int(22 * self._scaleFactor)
+            small_radius = 18 * self._scaleFactor
             offset_x = cx - main_radius * 0.6
             offset_y = cy + main_radius * 0.6
             painter.setPen(Qt.NoPen)
-            painter.setBrush(QColor(BASE_BLUE.red(), BASE_BLUE.green(), BASE_BLUE.blue(), 240))
+            painter.setBrush(QColor(0, 191, 165, 240))
             painter.drawEllipse(int(offset_x - small_radius), int(offset_y - small_radius), int(small_radius * 2), int(small_radius * 2))
 
         elif self.voice_state == "responding":
@@ -327,20 +310,20 @@ class VoiceAssistantWidget(QWidget):
                 x = spacing + i * (bar_width + spacing)
                 y = (self.height() - bar_height) / 2.0
                 grad = QLinearGradient(x, y, x, y + bar_height)
-                grad.setColorAt(0.0, QColor(BASE_BLUE.red(), BASE_BLUE.green(), BASE_BLUE.blue(), 220))
-                grad.setColorAt(1.0, QColor(BASE_BLUE.red(), BASE_BLUE.green(), BASE_BLUE.blue(), 150))
+                grad.setColorAt(0.0, QColor(173, 216, 230))
+                grad.setColorAt(1.0, QColor(25, 25, 112))
                 painter.setBrush(grad)
                 painter.setPen(Qt.NoPen)
                 painter.drawRect(int(x), int(y), int(bar_width), int(bar_height))
 
 ##############################################################################
-#   VOICE WORKER THREAD (Infinite Loop like nova_app.py)
+#   VOICE WORKER THREAD (Infinite Loop Like nova_app.py)
 ##############################################################################
 class VoiceWorker(QThread):
-    userSaidSignal = pyqtSignal(str)
-    novaSaidSignal = pyqtSignal(str)
-    stateSignal = pyqtSignal(str)
-    finishedSignal = pyqtSignal()
+    userSaidSignal = pyqtSignal(str)   # Emitted when user speaks a command
+    novaSaidSignal = pyqtSignal(str)   # Emitted when Nova replies
+    stateSignal = pyqtSignal(str)      # "idle", "listening", "responding"
+    finishedSignal = pyqtSignal()      # Emitted when loop ends
 
     def __init__(self, assistant: NovaAssistant):
         super().__init__()
@@ -349,15 +332,20 @@ class VoiceWorker(QThread):
 
     def run(self):
         while self.running:
+            # Set state to listening
             self.stateSignal.emit("listening")
             command = listen()  # Blocking call
+
             if not command or command.strip().lower() in ["listening...", "sorry, i didn't catch that.", ""]:
                 self.novaSaidSignal.emit("No speech detected")
                 continue
+
+            # Check for exit commands
             if any(x in command.lower() for x in ["exit", "quit", "stop"]):
                 self.novaSaidSignal.emit("Goodbye!")
                 speak("Goodbye!")
                 break
+
             self.stateSignal.emit("responding")
             self.userSaidSignal.emit(command)
             response = self.assistant.process_command(command, lambda x: None, speak_response=False)
@@ -447,9 +435,8 @@ class MainWindow(QMainWindow):
         self.voice_btn.setStyleSheet(f"""
             QPushButton {{
                 background: {COLORS['primary']};
-                color: {COLORS['text']};
-                border-radius: 25px;
-                font: bold 14px 'Segoe UI';
+                border-radius: 30px;
+                border: none;
             }}
             QPushButton:hover {{
                 background: #0062A3;
@@ -462,7 +449,7 @@ class MainWindow(QMainWindow):
 
         content_layout.addWidget(self.text_mode_container, stretch=3)
 
-        # Right: Voice mode panel (only Start and Close buttons remain)
+        # Right: Voice mode panel
         self.voice_mode_panel = QWidget()
         self.voice_mode_panel.setFixedWidth(300)
         voice_layout = QVBoxLayout(self.voice_mode_panel)
@@ -490,6 +477,18 @@ class MainWindow(QMainWindow):
                 background: #0062A3;
             }}
         """)
+        self.stop_btn = QPushButton("Stop")
+        self.stop_btn.setFixedSize(80, 40)
+        self.stop_btn.setStyleSheet(f"""
+            QPushButton {{
+                background: {COLORS['primary']};
+                color: {COLORS['text']};
+                border-radius: 15px;
+            }}
+            QPushButton:hover {{
+                background: #0062A3;
+            }}
+        """)
         self.close_voice_btn = QPushButton("Close")
         self.close_voice_btn.setFixedSize(80, 40)
         self.close_voice_btn.setStyleSheet(f"""
@@ -503,6 +502,7 @@ class MainWindow(QMainWindow):
             }}
         """)
         controls_layout.addWidget(self.start_btn)
+        controls_layout.addWidget(self.stop_btn)
         controls_layout.addWidget(self.close_voice_btn)
         voice_layout.addLayout(controls_layout)
 
@@ -520,6 +520,7 @@ class MainWindow(QMainWindow):
         self.voice_btn.clicked.connect(self.enter_voice_mode)
         self.close_voice_btn.clicked.connect(self.exit_voice_mode)
         self.start_btn.clicked.connect(self.start_voice_listening)
+        self.stop_btn.clicked.connect(self.stop_listening)
 
     def add_message(self, text, is_nova=True):
         bubble = ChatBubble(text, is_nova)
@@ -583,15 +584,14 @@ class MainWindow(QMainWindow):
         self.voice_btn.setStyleSheet(f"""
             QPushButton {{
                 background: {COLORS['primary']};
-                color: {COLORS['text']};
-                border-radius: 25px;
-                font: bold 14px 'Segoe UI';
+                border-radius: 30px;
+                border: none;
             }}
             QPushButton:hover {{
                 background: #0062A3;
             }}
         """)
-        for btn in [self.start_btn, self.close_voice_btn]:
+        for btn in [self.start_btn, self.stop_btn, self.close_voice_btn]:
             btn.setStyleSheet(f"""
                 QPushButton {{
                     background: {COLORS['primary']};
@@ -628,6 +628,13 @@ class MainWindow(QMainWindow):
         self.voice_thread.stateSignal.connect(self.voice_assistant_widget.set_voice_state)
         self.voice_thread.finishedSignal.connect(self.on_voice_finished)
         self.voice_thread.start()
+
+    def stop_listening(self):
+        if self.voice_thread:
+            self.voice_thread.stop()
+            self.voice_thread.wait()
+            self.voice_thread = None
+        self.voice_assistant_widget.set_voice_state("idle")
 
     def on_voice_finished(self):
         self.voice_thread = None
